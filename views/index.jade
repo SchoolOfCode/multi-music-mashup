@@ -11,7 +11,7 @@ html(lang='en')
     // <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     script(src='https://code.jquery.com/jquery-1.12.4.js')
     script(src='https://code.jquery.com/ui/1.12.1/jquery-ui.js')
-    script(src='/js/audio-stuff.js')
+    script(src='/js/makeMusic.js')
     script.
       $( function() {
         console.log('called')
@@ -42,8 +42,6 @@ html(lang='en')
               h2#player-1-name Melody Jane
         #player-code-1
           #editor
-            | drums.start();
-            | drums.rate(3);
             | beijing.start();
             | beijing.rate(2);
             | beijing.loop(true);
@@ -52,11 +50,13 @@ html(lang='en')
             | abcde.play(0);
             | abcde.rate(1.5);
             | abcde.fade(1,0,3000);
-            | drums.rate(1);
-            | drums.loop(false);
             | beijing.loop(false);
         #player-code-2
-          #editor2 //Editor 2 code!
+          #editor2
+            | drums.start();
+            | drums.rate(3);
+            | drums.rate(1);
+            | drums.loop(false);
       // Tab Content
       .sidebar-code
       .play
@@ -124,10 +124,11 @@ html(lang='en')
       var channel = pusher.subscribe(channelName);
       channel.bind('client-send_code', function (data) {
         var playerId = data.playerId;
-        if(playerId == 0){
+        //and, not from myself
+        if(playerId == 0 && playerNumber != 0){
           editor.setValue(data.code)
         }
-        else if (playerId == 1) {
+        if (playerId == 1 && playerNumber != 1) {
           editor2.setValue(data.code)
         }
       });
@@ -136,18 +137,13 @@ html(lang='en')
       //handle play button pressed
       document.getElementById('play-button').onclick = function(e) {
         console.log('play clicked');
-        //get the code from ace editor
-        var userCode = editor.getValue();
-        var actions = makeMusic(walkAST(esprima.parse(userCode)));
 
-        /*var userCode2 =
-         `drums.start();
-         drums.rate(1);
-         drums.loop(true);`;
-         var actions2 = makeMusic(walkAST(esprima.parse(userCode2)));*/
-
-        //play user code
-        actions[0](chain(1, actions));
-        // actions2[0](chain(1, actions2));
-        // start.style.display = 'none';
-      }
+        var player1Code = editor.getValue();
+        makeMusic.playTheMusic(player1Code, function () {
+          console.log('finished playing player1 track');
+        });
+        var player2Code = editor2.getValue();
+        makeMusic.playTheMusic(player2Code, function () {
+          console.log('finished playing player2 track');
+        });
+      };
