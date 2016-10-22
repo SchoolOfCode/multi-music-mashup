@@ -199,6 +199,7 @@ var makeMusic = (function () {
         // Create an analyser node in the Howler WebAudio context
         var analyser = Howler.ctx.createAnalyser();
         // Connect the masterGain -> analyser (disconnecting masterGain -> destination)
+        //TODO: If we can hook in to the different tracks then we can plot each individually
         Howler.masterGain.connect(analyser);
         // Connect the analyser -> destination
         analyser.connect(Howler.ctx.destination);
