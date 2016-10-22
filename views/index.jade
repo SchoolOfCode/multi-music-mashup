@@ -1,80 +1,111 @@
-html
+doctype html
+html(lang='en')
   head
-    link(rel='stylesheet', type='text/css', href='stylesheets/style.css')
+    meta(charset='UTF-8')
+    title Title
     script(src='https://js.pusher.com/3.2/pusher.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.1/howler.min.js')
+    link(type='text/css', rel='stylesheet', href='/stylesheets/css/style.css')
+    link(href='https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700', rel='stylesheet')
+    // <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    script(src='https://code.jquery.com/jquery-1.12.4.js')
+    script(src='https://code.jquery.com/ui/1.12.1/jquery-ui.js')
     script.
-      function onLoad() {
-        //Pusher Code
-        // Enable pusher logging - don't include this in production
-        //Pusher.logToConsole = true;
-        var pusher = new Pusher('1784c495a02ce5c67fa9', {
-          cluster: 'eu',
-          encrypted: true
-        });
-        var channelName = '#{channel}';
-        var playerNumber = '#{playerNumber}';
-        var channel = pusher.subscribe(channelName);
-        channel.bind('client-send_code', function (data) {
-          var playerId = data.playerId;
-          document.getElementById(`player-${playerId}-code`).value = data.code;
-        });
-        //End Pusher Code
-
-        //setInterval(function(){
-        //  var player1Code = document.getElementById('player-0-code').value;
-        //  console.log(player1Code)
-        //  channel.trigger('client-send_code', {
-        //    code: player1Code
-        //  });
-        //},500)
-
-        //handle button click
-        if (playerNumber <= 1) {
-          //setup button listeners
-          //document.getElementById(`player-${playerNumber}-button`).onclick = function (e) {
-          //  console.log('clicked button')
-          //  var code = document.getElementById(`player-${playerNumber}-code`).value;
-          //  console.log(code)
-          //  channel.trigger('client-send_code', {
-          //    playerId: playerNumber,
-          //    code: code
-          //  });
-          //};
-
-          //setup code change listeners
-          document.getElementById(`player-${playerNumber}-code`).oninput = function (e) {
-            var code = e.srcElement.value;
-            channel.trigger('client-send_code', {
-              playerId: playerNumber,
-              code: code
-            });
-          };
-        }
+      $( function() {
+        console.log('called')
+        $( "#tabs" ).tabs();
+      } );
+    style(type='text/css', media='screen').
+      #editor, #editor2 {
+        position: relative;
+        width: 100%;
+        height: 1000px;
       }
-      window.onload = onLoad;
+  script.
+    var channelName = '#{channel}';
+    var playerNumber = '#{playerNumber}';
+    console.log(playerNumber);
+    function onLoad() {
+      //Pusher Code
+      // Enable pusher logging - don't include this in production
+      //Pusher.logToConsole = true;
+      var pusher = new Pusher('1784c495a02ce5c67fa9', {
+        cluster: 'eu',
+        encrypted: true
+      });
+      var channel = pusher.subscribe(channelName);
+      channel.bind('client-send_code', function (data) {
+        var playerId = data.playerId;
+        document.getElementById(`player-${playerId}-code`).value = data.code;
+      });
+      //End Pusher Code
+
+      //handle button click
+      if (playerNumber <= 1) {
+
+        //setup code change listeners
+        //document.getElementById(`player-${playerNumber}-code`).oninput = function (e) {
+        //  var code = e.srcElement.value;
+        //  channel.trigger('client-send_code', {
+        //    playerId: playerNumber,
+        //    code: code
+        //  });
+        //};
+      }
+    }
+    window.onload = onLoad;
   body
-    .room-wrapper
-      section#left-side
-        .player-name
-          h2 Music Bob
-        #player-0-area
-          | This is the player area
-        div
-          if playerNumber == 0
-            textarea#player-0-code
-          else
-            textarea#player-0-code(disabled)
-        //if playerNumber == 0
-        //  button#player-0-button Press Me
-      section#right-side
-        .player-name
-          h2 Melody Jane
-        #player-1-area
-          | This is the player area
-        div
-          if playerNumber == 1
-            textarea#player-1-code
-          else
-            textarea#player-1-code(disabled)
-        //if playerNumber == 1
-        //  button#player-1-button Press Me
+    section#sidebar
+      .sidebar-header
+        h1 MMM
+        p Multimedia music mashup
+      #tabs.sidebar-tabs
+        ul
+          li#player-tab-1.tab
+            a(href='#player-code-1')
+              h2#player-0-name Music Bob
+          li#player-tab-2.tab
+            a(href='#player-code-2')
+              h2#player-1-name Melody Jane
+        #player-code-1
+          #editor
+            | function foo(items) {
+            | var x = "All this is syntax highlighted";
+            | return x;
+            | }
+        #player-code-2
+          #editor2 //Editor 2 code!
+      // Tab Content
+      .sidebar-code
+      .play
+        h3
+          | Play
+          img(src='/images/play.svg')
+    section#right-side
+    script(src='https://ace.c9.io/build/src/ace.js', type='text/javascript', charset='utf-8')
+    script.
+      //if playerNumber == 0 //var 0 or 1
+      var isEditorOneEnabled = true;
+      if(playerNumber == 0){
+        isEditorOneEnabled = false;
+      }
+      else{
+        isEditorOneEnabled = true;
+      }
+
+      var editor = ace.edit("editor");
+      editor.setTheme("ace/theme/monokai");
+      editor.getSession().setMode("ace/mode/javascript");
+      editor.setReadOnly(isEditorOneEnabled);
+    script.
+      var isEditorTwoEnabled = true;
+      if (playerNumber == 1) {
+        isEditorTwoEnabled = false;
+      }
+      else {
+        isEditorTwoEnabled = true;
+      }
+      var editor2 = ace.edit("editor2");
+      editor2.setTheme("ace/theme/monokai");
+      editor2.getSession().setMode("ace/mode/javascript");
+      editor2.setReadOnly(isEditorTwoEnabled);
