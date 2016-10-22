@@ -1,0 +1,46 @@
+h1, h2, h3, h4, h5, h6, p, a{
+  margin: 0px;
+  padding: 0px;
+}
+
+body, article, section, div{
+  display: block;
+  margin: 0px;
+  padding: 0px;
+}
+
+body{
+  overflow: hidden;
+}
+
+/* Room */
+.room-wrapper{
+  display: flex;
+  flex-wrap: nowrap;
+  height: 100%;
+}
+#left-side, #right-side{
+  text-align: center;
+}
+
+/* Left Player */
+#left-side{
+  width: 50%;
+  border-right: 2px solid black;
+}
+#player-1-area{
+  padding: 30px;
+}
+
+/* Right Player */
+#right-side{
+  width: 50%;
+}
+#player-2-area{
+  padding: 30px;
+}
+
+.player-name{
+  padding: 20px;
+  border-bottom: 2px solid black;
+}
