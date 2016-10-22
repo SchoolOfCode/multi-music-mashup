@@ -30,10 +30,20 @@ html
 
         //handle button click
         if (playerNumber <= 1) {
-          document.getElementById(`player-${playerNumber}-button`).onclick = function (e) {
-            console.log('clicked button')
-            var code = document.getElementById(`player-${playerNumber}-code`).value;
-            console.log(code)
+          //setup button listeners
+          //document.getElementById(`player-${playerNumber}-button`).onclick = function (e) {
+          //  console.log('clicked button')
+          //  var code = document.getElementById(`player-${playerNumber}-code`).value;
+          //  console.log(code)
+          //  channel.trigger('client-send_code', {
+          //    playerId: playerNumber,
+          //    code: code
+          //  });
+          //};
+
+          //setup code change listeners
+          document.getElementById(`player-${playerNumber}-code`).oninput = function (e) {
+            var code = e.srcElement.value;
             channel.trigger('client-send_code', {
               playerId: playerNumber,
               code: code
@@ -54,8 +64,8 @@ html
             textarea#player-0-code
           else
             textarea#player-0-code(disabled)
-        if playerNumber == 0
-          button#player-0-button Press Me
+        //if playerNumber == 0
+        //  button#player-0-button Press Me
       section#right-side
         .player-name
           h2 Melody Jane
@@ -66,5 +76,5 @@ html
             textarea#player-1-code
           else
             textarea#player-1-code(disabled)
-        if playerNumber == 1
-          button#player-1-button Press Me
+        //if playerNumber == 1
+        //  button#player-1-button Press Me
