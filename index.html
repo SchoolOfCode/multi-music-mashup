@@ -28,6 +28,16 @@
 <p id='start'>
     start
 </p>
-<script src="test.js"></script>
+<script src="makeMusic.js"></script>
+<script>
+    var label = document.getElementById('label');
+    var start = document.getElementById('start');
+    var input = document.getElementById('input');
+    start.addEventListener('click', function() {
+        makeMusic.playTheMusic(input.value, function () {
+            label.innerHTML = 'COMPLETE!';
+        })
+    }, false);
+</script>
 </body>
 </html>
