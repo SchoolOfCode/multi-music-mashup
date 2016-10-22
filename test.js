@@ -10,15 +10,14 @@ var howls = {
 };
 
 howls.drums.once('load', function () {
-    start.removeAttribute('disabled');
-    start.innerHTML = 'BEGIN CORE TESTS';
+    start.innerHTML = 'BEGIN';
 });
 var id;
-var current;
 
 var methods = {
-    start : function start({callee = 'drums'}){
-        console.log(callee);
+    start : function start(input){
+        console.log(input);
+        var callee = input.callee;
         return function (fn) {
             howls[callee].once('play', function () {
                 label.innerHTML = 'PLAYING';
@@ -28,28 +27,40 @@ var methods = {
             id = howls[callee].play();
         }
     },
-    play: function play({callee = 'drums', args = 0}){
+    play: function play(input){
+        console.log(input);
+        var callee = input.callee || 'drums';
+        var args = input.args || [0];
         return function (fn) {
             howls[callee].play(id);
             label.innerHTML = 'Playing';
-            setTimeout(fn, args);
+            setTimeout(fn, args[0]);
         };
     },
-    pause: function pause({callee = 'drums', args = 0}){
+    pause: function pause(input){
+        console.log(input);
+        var callee = input.callee || 'drums';
+        var args = input.args || [0];
         return function(fn){
             howls[callee].pause(id);
             label.innerHTML = 'Paused';
-            setTimeout(fn, args);
+            setTimeout(fn, args[0]);
         };
     },
-    rate: function rate({callee = 'drums', args = 0}) {
+    rate: function rate(input) {
+        console.log(input);
+        var callee = input.callee || 'drums';
+        var args = input.args || [0];
         return function(fn) {
-            howls[callee].rate(args, id);
+            howls[callee].rate(args[0], id);
             label.innerHTML = 'Change Rate';
             fn();
         }
     },
-    fade: function fade({callee = 'drums', args = [0,1,1000]}) {
+    fade: function fade(input) {
+        console.log(input);
+        var callee = input.callee || 'drums';
+        var args = input.args || [0,1,1000];
         return function (fn) {
             howls[callee].fade(args[0], args[1], args[2]);
             label.innerHTML = 'FADE';
@@ -60,141 +71,21 @@ var methods = {
             });
         }
     },
-    loop: function loop({callee = 'drums', args = true}) {
+    loop: function loop(input) {
+        console.log(input);
+        var callee = input.callee || 'drums';
+        var args = input.args || [true];
         return function (fn) {
-            howls[callee].loop(args);
+            howls[callee].loop(args[0]);
             label.innerHTML = 'Repeat';
             fn();
         }
     }
-//     : ({callee = 'character', args = [], iter = 1}) => {
-//         const defaultArgs = ['5px'];
-//         for (let i = 0; i < defaultArgs.length; i++) {
-//             if(typeof args[i] === 'undefined') {
-//                 args[i] = defaultArgs[i];
-//             }
-//             if (i===0) {
-//                 if(args[0][0] === '-') {
-//                     args[0] = args[0].slice(1);
-//                 } else {
-//                     args[0] = `-${args[0]}`;
-//                 }
-//             }
-//         }
-//         const selector = isSpecialWord(callee) ? `#${callee}` : `.${callee}`;
-//         return `
-// ${selector} {
-//   animation: jump-${callee} 1s 0.5s ${iter};
-//   animation-timing-function: ease-in-out;
-//   transform-origin: center center;
-// }
-// @keyframes jump-${callee} {
-//   0% {
-//     -webkit-transform: translateY(0);
-//     transform: translateY(0);
-//   }
-//   20% {
-//     -webkit-transform: rotate(0deg) translateY(${args[0]});
-//     transform: rotate(0deg) translateY(${args[0]});
-//   }
-//   33% {
-//     -webkit-transform: rotate(-10deg) translateY(${args[0]});
-//     transform: rotate(-10deg) translateY(${args[0]});
-//   }
-//   66% {
-//     -webkit-transform: rotate(10deg) translateY(${args[0]});
-//     transform: rotate(10deg) translateY(${args[0]});
-//   }
-//   90% {
-//     -webkit-transform: rotate(0deg) translateY(${args[0]});
-//     transform: rotate(0deg) translateY(${args[0]});
-//   }
-//   100% {
-//     -webkit-transform: translateY(0);
-//     transform: translateY(0);
-//   }
-// }`;
-//     }
-}
-// var makeStart = function(sound){
-//     return function (fn) {
-//         sound.once('play', function () {
-//             label.innerHTML = 'PLAYING';
-//             //setTimeout(fn, 2000);
-//             fn();
-//         });
-//         id = sound.play();
-//         current = sound;
-//     }
-// };
-//
-// var chooseSound = function(sound) {
-//     return function(fn) {
-//         current = sound;
-//         fn();
-//     }
-// };
-//
-// var makePlay = function(time){
-//     return function (fn) {
-//         current.play(id);
-//         label.innerHTML = 'Playing';
-//         setTimeout(fn, time);
-//     };
-// };
-//
-// var makePause = function(time){
-//     return function(fn){
-//         current.pause(id);
-//         label.innerHTML = 'Paused';
-//         setTimeout(fn, time);
-//     };
-// };
-//
-// var makeRate = function(rate) {
-//     return function(fn) {
-//         current.rate(rate, id);
-//         label.innerHTML = 'Change Rate';
-//         fn();
-//     }
-// };
-//
-// var makeFade = function(from, to, time) {
-//     return function (fn) {
-//         current.fade(from, to, time);
-//         label.innerHTML = 'FADE';
-//         current.once('fade', function () {
-//             if (current._onfade.length === 0) {
-//                 fn();
-//             }
-//         });
-//     }
-// };
-//
-// var makeLoop = function(loop) {
-//     return function (fn) {
-//         current.loop(loop);
-//         label.innerHTML = 'Repeat';
-//         fn();
-//     }
-// };
+};
 
-// var actions = [methods.start(rnbdrum),methods.rate(3),methods.loop(true),methods.start(beijing), methods.rate(2), methods.loop(true),methods.start(abcde)];
-//
-// actions.push(methods.pause(2000));
-// actions.push(methods.play(0));
-// actions.push(methods.rate(1.5));
-// actions.push(methods.fade(1,0,2000));
-// actions.push(methods.sound(rnbdrum));
-// actions.push(methods.rate(1));
-// actions.push(methods.loop(false));
-// actions.push(methods.sound(beijing));
-// actions.push(methods.loop(false));
+var actions = makeMusic(walkAST(esprima.parse("drums.start();drums.rate(3);beijing.start();beijing.rate(2);beijing.loop(true);abcde.start();abcde.pause(2000); abcde.play(0); abcde.rate(1.5); abcde.fade(1,0,3000);drums.rate(1);drums.loop(false);beijing.loop(false);")));
+// var actions = makeMusic(walkAST(esprima.parse("drums.start();drums.loop(true);drums.rate(3);")));
 
-// var actions = makeMusic(walkAST(esprima.parse("drums.start();drums.rate(2);beijing.start();beijing.rate(2);beijing.loop(true);abcde.start();")));
-var actions = makeMusic(walkAST(esprima.parse("drums.start();beijing.start();abcde.start();")));
-
-console.log(actions);
 
 var chain = function (i) {
     return function () {
@@ -210,12 +101,9 @@ var chain = function (i) {
 if (Howler.usingWebAudio) {
     start.addEventListener('click', function () {
         actions[0](chain(1));
-        start.style.display = 'none';
+        // start.style.display = 'none';
     }, false);
 }
-
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 function walkAST(node) {
     var _this = this;
@@ -280,23 +168,20 @@ function walkAST(node) {
 }
 
 function makeMusic(ast) {
-
-    var passProperties = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
     var js = [];
     if (!ast) {
         return [];
     }
     if (ast.children && ast.children.length > 0) {
         js = (ast.children.map(function (child) {
-            return makeMusic(child, passProperties);
+            return makeMusic(child);
         }));
     }
     switch (ast.type) {
         case 'call':
             var method = methods[ast.name];
             if (method) {
-                js = method({ast, passProperties});
+                js = method(ast);
             }
             break;
     }
