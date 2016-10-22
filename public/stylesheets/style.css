@@ -13,6 +13,11 @@ body{
   overflow: hidden;
 }
 
+textarea {
+  width: 300px;
+  min-height: 500px;
+}
+
 /* Room */
 .room-wrapper{
   display: flex;
@@ -28,7 +33,7 @@ body{
   width: 50%;
   border-right: 2px solid black;
 }
-#player-1-area{
+#player-0-area{
   padding: 30px;
 }
 
@@ -36,7 +41,7 @@ body{
 #right-side{
   width: 50%;
 }
-#player-2-area{
+#player-1-area{
   padding: 30px;
 }
 
