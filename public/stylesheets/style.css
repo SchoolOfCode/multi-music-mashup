@@ -1,4 +1,9 @@
 
+textarea {
+  width: 300px;
+  min-height: 500px;
+}
+
 /* Room */
 .room-wrapper{
   display: flex;
@@ -14,7 +19,7 @@
   width: 50%;
   border-right: 2px solid black;
 }
-#player-1-area{
+#player-0-area{
   padding: 30px;
 }
 
@@ -22,7 +27,7 @@
 #right-side{
   width: 50%;
 }
-#player-2-area{
+#player-1-area{
   padding: 30px;
 }
 
