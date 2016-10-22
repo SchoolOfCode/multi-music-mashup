@@ -3,6 +3,7 @@
  */
 var label = document.getElementById('label');
 var start = document.getElementById('start');
+var input = document.getElementById('input');
 var howls = {
     abcde: new Howl({src: ['http://shrt.tf/abcdefg.mp3']}),
     beijing: new Howl({src: ['https://upload.wikimedia.org/wikipedia/commons/8/8a/Zh-Beijing.ogg']}),
@@ -83,23 +84,22 @@ var methods = {
     }
 };
 
-var actions = makeMusic(walkAST(esprima.parse("drums.start();drums.rate(3);beijing.start();beijing.rate(2);beijing.loop(true);abcde.start();abcde.pause(2000); abcde.play(0); abcde.rate(1.5); abcde.fade(1,0,3000);drums.rate(1);drums.loop(false);beijing.loop(false);")));
-// var actions = makeMusic(walkAST(esprima.parse("drums.start();drums.loop(true);drums.rate(3);")));
+// var actions = makeMusic(walkAST(esprima.parse("drums.start();drums.rate(3);beijing.start();beijing.rate(2);beijing.loop(true);abcde.start();abcde.pause(2000); abcde.play(0); abcde.rate(1.5); abcde.fade(1,0,3000);drums.rate(1);drums.loop(false);beijing.loop(false);")));
 
-
-var chain = function (i) {
-    return function () {
-        if (actions[i]) {
-            actions[i](chain(++i));
-        } else {
-            label.innerHTML = 'COMPLETE!';
-            label.style.color = '#74b074';
-        }
-    };
-};
 
 if (Howler.usingWebAudio) {
     start.addEventListener('click', function () {
+        var actions = makeMusic(walkAST(esprima.parse(input.value)));
+        var chain = function (i) {
+            return function () {
+                if (actions[i]) {
+                    actions[i](chain(++i));
+                } else {
+                    label.innerHTML = 'COMPLETE!';
+                    label.style.color = '#74b074';
+                }
+            };
+        };
         actions[0](chain(1));
         // start.style.display = 'none';
     }, false);
