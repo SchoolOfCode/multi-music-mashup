@@ -21,7 +21,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//setup routes
+
 app.use('/', routes);
+app.use('/pusher', require('./routes/pusher'));
+
+//pusher handling
+// setInterval(() => {
+//   pusher.trigger('mmm-0', 'my_event', {
+//     "message": "hello world"
+//   });
+// }, 2000);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,0 +1,42 @@
+html
+  head
+    link(rel='stylesheet', type='text/css', href='stylesheets/style.css')
+    script(src='https://js.pusher.com/3.2/pusher.min.js')
+    script.
+      function onLoad() {
+        //Pusher Code
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+        var pusher = new Pusher('1784c495a02ce5c67fa9', {
+          cluster: 'eu',
+          encrypted: true
+        });
+        var channelName = '#{channel}';
+        var channel = pusher.subscribe(channelName);
+        channel.bind('client-my_event', function (data) {
+          console.log(data.message);
+        });
+        //End Pusher Code
+
+        //handle button click
+        document.getElementById('the-button').onclick = function(e) {
+          console.log('clicked button')
+          channel.trigger('client-my_event', {
+            message: "pressed a button"
+          });
+        };
+      }
+      window.onload = onLoad;
+  body
+    .room-wrapper
+      section#left-side
+        .player-name
+          h2#player-1-name Player Name
+        #player-1-area
+          | This is the player area
+        button#the-button Press Me
+      section#right-side
+        .player-name
+          h2 Player Name
+        #player-2-area
+          | This is the player area
