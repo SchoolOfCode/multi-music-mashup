@@ -6,21 +6,21 @@ var start = document.getElementById('start');
 var howls = {
     abcde: new Howl({src: ['http://shrt.tf/abcdefg.mp3']}),
     beijing: new Howl({src: ['https://upload.wikimedia.org/wikipedia/commons/8/8a/Zh-Beijing.ogg']}),
-    drums: new Howl({src: ['./rnb_drum.wav']})
+    drums: new Howl({src: ['/audio/rnb_drum.wav']})
 };
 
-howls.drums.once('load', function () {
-    start.innerHTML = 'BEGIN';
-});
+// howls.drums.once('load', function () {
+//     start.innerHTML = 'BEGIN';
+// });
 var id;
 
 var methods = {
     start : function start(input){
-        console.log(input);
+        //console.log(input);
         var callee = input.callee;
         return function (fn) {
             howls[callee].once('play', function () {
-                label.innerHTML = 'PLAYING';
+                // label.innerHTML = 'PLAYING';
                 //setTimeout(fn, 2000);
                 fn();
             });
@@ -28,42 +28,42 @@ var methods = {
         }
     },
     play: function play(input){
-        console.log(input);
+        //console.log(input);
         var callee = input.callee || 'drums';
         var args = input.args || [0];
         return function (fn) {
             howls[callee].play(id);
-            label.innerHTML = 'Playing';
+            // label.innerHTML = 'Playing';
             setTimeout(fn, args[0]);
         };
     },
     pause: function pause(input){
-        console.log(input);
+        //console.log(input);
         var callee = input.callee || 'drums';
         var args = input.args || [0];
         return function(fn){
             howls[callee].pause(id);
-            label.innerHTML = 'Paused';
+            // label.innerHTML = 'Paused';
             setTimeout(fn, args[0]);
         };
     },
     rate: function rate(input) {
-        console.log(input);
+        //console.log(input);
         var callee = input.callee || 'drums';
         var args = input.args || [0];
         return function(fn) {
             howls[callee].rate(args[0], id);
-            label.innerHTML = 'Change Rate';
+            // label.innerHTML = 'Change Rate';
             fn();
         }
     },
     fade: function fade(input) {
-        console.log(input);
+        //console.log(input);
         var callee = input.callee || 'drums';
         var args = input.args || [0,1,1000];
         return function (fn) {
             howls[callee].fade(args[0], args[1], args[2]);
-            label.innerHTML = 'FADE';
+            // label.innerHTML = 'FADE';
             howls[callee].once('fade', function () {
                 if (howls[callee]._onfade.length === 0) {
                     fn();
@@ -72,38 +72,16 @@ var methods = {
         }
     },
     loop: function loop(input) {
-        console.log(input);
+        //console.log(input);
         var callee = input.callee || 'drums';
         var args = input.args || [true];
         return function (fn) {
             howls[callee].loop(args[0]);
-            label.innerHTML = 'Repeat';
+            // label.innerHTML = 'Repeat';
             fn();
         }
     }
 };
-
-var actions = makeMusic(walkAST(esprima.parse("drums.start();drums.rate(3);beijing.start();beijing.rate(2);beijing.loop(true);abcde.start();abcde.pause(2000); abcde.play(0); abcde.rate(1.5); abcde.fade(1,0,3000);drums.rate(1);drums.loop(false);beijing.loop(false);")));
-// var actions = makeMusic(walkAST(esprima.parse("drums.start();drums.loop(true);drums.rate(3);")));
-
-
-var chain = function (i) {
-    return function () {
-        if (actions[i]) {
-            actions[i](chain(++i));
-        } else {
-            label.innerHTML = 'COMPLETE!';
-            label.style.color = '#74b074';
-        }
-    };
-};
-
-if (Howler.usingWebAudio) {
-    start.addEventListener('click', function () {
-        actions[0](chain(1));
-        // start.style.display = 'none';
-    }, false);
-}
 
 function walkAST(node) {
     var _this = this;
@@ -186,4 +164,21 @@ function makeMusic(ast) {
             break;
     }
     return js;
+}
+
+var chain = function (i, actions) {
+    return function () {
+        if (actions[i]) {
+            actions[i](chain(++i, actions));
+        } else {
+            console.log('finished playing user code')
+        }
+    };
+};
+
+if (Howler.usingWebAudio) {
+
+    //TODO: This is to kick it off
+    //we want this to be done on the play button
+
 }
