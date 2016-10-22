@@ -12,17 +12,30 @@ html
           encrypted: true
         });
         var channelName = '#{channel}';
+        var playerNumber = '#{playerNumber}';
         var channel = pusher.subscribe(channelName);
-        channel.bind('client-my_event', function (data) {
-          console.log(data.message);
+        channel.bind('client-send_code', function (data) {
+          var playerId = data.playerId;
+          document.getElementById(`player-${playerId}-code`).value = data.code;
         });
         //End Pusher Code
 
+        //setInterval(function(){
+        //  var player1Code = document.getElementById('player-0-code').value;
+        //  console.log(player1Code)
+        //  channel.trigger('client-send_code', {
+        //    code: player1Code
+        //  });
+        //},500)
+
         //handle button click
-        document.getElementById('the-button').onclick = function(e) {
+        document.getElementById(`player-${playerNumber}-button`).onclick = function (e) {
           console.log('clicked button')
-          channel.trigger('client-my_event', {
-            message: "pressed a button"
+          var code = document.getElementById(`player-${playerNumber}-code`).value;
+          console.log(code)
+          channel.trigger('client-send_code', {
+            playerId: playerNumber,
+            code: code
           });
         };
       }
@@ -31,12 +44,17 @@ html
     .room-wrapper
       section#left-side
         .player-name
-          h2#player-1-name Player Name
-        #player-1-area
+          h2#player-0-name Player Name
+        #player-0-area
           | This is the player area
-        button#the-button Press Me
+        if playerNumber == 0
+          button#player-0-button Press Me
+        textarea#player-0-code
       section#right-side
         .player-name
           h2 Player Name
-        #player-2-area
+        #player-1-area
           | This is the player area
+        if playerNumber == 1
+          button#player-1-button Press Me
+        textarea#player-1-code
