@@ -1,0 +1,128 @@
+@import "main";
+
+/* Room */
+.room-wrapper{
+  display: flex;
+  flex-wrap: nowrap;
+  height: 100%;
+}
+#left-side, #right-side{
+  text-align: center;
+}
+
+/* Left Player */
+#left-side{
+  width: 50%;
+  border-right: 2px solid black;
+}
+#player-1-area{
+  padding: 30px;
+}
+
+/* Right Player */
+#right-side{
+  width: 50%;
+}
+#player-2-area{
+  padding: 30px;
+}
+
+.player-name{
+  padding: 20px;
+  border-bottom: 2px solid black;
+}
+
+/* NEW CODE */
+
+body{
+  display: flex;
+  height: 100%;
+}
+#sidebar{
+  position: relative;
+  width: 40%;
+  background-color: #282828;
+  height: 100%;
+  border-right: 2px solid white;
+  .sidebar-header{
+    border-bottom: 2px solid white;
+    padding: 20px 15px;
+    color: white;
+    h1{
+      font-weight: 500;
+      letter-spacing: 3px;
+    }
+    p{
+      font-weight: 300;
+      letter-spacing: 3px;
+      opacity: 0.7;
+    }
+  }
+  .sidebar-tabs{
+    ul{
+      margin: 0px;
+      padding: 0px;
+      list-style-type: none;
+      display: flex;
+    }
+    .tab{
+      width: 50%;
+      text-align: center;
+      padding: 10px 0px;
+      border-bottom: 2px solid white;
+      color: white;
+      font-weight: 300;
+      letter-spacing: 1px;
+      p{
+        opacity: 0.8;
+      }
+      a{
+        color: white;
+      }
+      h2{
+        font-weight: 300;
+        font-size: 18px;
+      }
+    }
+    .tab:nth-child(1){
+      border-right: 2px solid white;
+    }
+  }
+  .sidebar-code{
+    height: 200px;
+  }
+  .play{
+    text-align: center;
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 20px 0px;
+    border-top: 2px solid white;
+    width: 100%;
+    background-color: #282828;
+    z-index: 9999999;
+    h3{
+      font-weight: 200;
+      letter-spacing: 2px;
+      color: white;
+      opacity: 0.8;
+    }
+    img{
+      width: 15px;
+      margin: 0px 10px;
+    }
+    cursor: pointer;
+  }
+  .play:hover{
+    h3 {
+      letter-spacing: 3px;
+    }
+  }
+}
+#right-side{
+  height: 100%;
+  width: 60%;
+  background-color: #171717;
+
+}
