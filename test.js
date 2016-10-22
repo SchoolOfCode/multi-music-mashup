@@ -81,6 +81,14 @@ var methods = {
             label.innerHTML = 'Repeat';
             fn();
         }
+    },
+    wait: function wait(input) {
+        console.log(input);
+        var callee = input.callee || 'drums';
+        var args = input.args || [1000];
+        return function (fn) {
+            setTimeout(fn,args[0]);
+        }
     }
 };
 
