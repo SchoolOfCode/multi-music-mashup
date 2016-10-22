@@ -1,0 +1,28 @@
+h1, h2, h3, h4, h5, h6, p, a{
+  margin: 0px;
+  padding: 0px;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+body, article, section, div{
+  display: block;
+  margin: 0px;
+  padding: 0px;
+}
+
+body{
+  overflow: hidden;
+}
+
+html{
+  height: 100%;
+}
+
+*{
+  transition: all 0.3s ease;
+}
+
+a{
+  text-decoration: none;
+  color: black;
+}

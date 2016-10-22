@@ -1,0 +1,93 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='UTF-8')
+        title Title
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.1/howler.min.js')
+        link(type='text/css', rel='stylesheet', href='stylesheets/css/style.css')
+        link(href='https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700', rel='stylesheet')
+        // <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        script(src='https://code.jquery.com/jquery-1.12.4.js')
+        script(src='https://code.jquery.com/ui/1.12.1/jquery-ui.js')
+        script.
+            $( function() {
+                console.log('called')
+                $( "#tabs" ).tabs();
+            } );
+        style(type='text/css', media='screen').
+            #editor, #editor2 {
+                position: relative;
+                width: 100%;
+                height: 1000px;
+            }
+    script.
+        function onLoad() {
+            //Pusher Code
+            // Enable pusher logging - don't include this in production
+            //Pusher.logToConsole = true;
+            var pusher = new Pusher('1784c495a02ce5c67fa9', {
+                cluster: 'eu',
+                encrypted: true
+            });
+            var channelName = '#{channel}';
+            var playerNumber = '#{playerNumber}';
+            var channel = pusher.subscribe(channelName);
+            channel.bind('client-send_code', function (data) {
+                var playerId = data.playerId;
+                document.getElementById(`player-${playerId}-code`).value = data.code;
+            });
+            //End Pusher Code
+
+            //handle button click
+            if (playerNumber <= 1) {
+
+                //setup code change listeners
+                document.getElementById(`player-${playerNumber}-code`).oninput = function (e) {
+                    var code = e.srcElement.value;
+                    channel.trigger('client-send_code', {
+                        playerId: playerNumber,
+                        code: code
+                    });
+                };
+            }
+        }
+        window.onload = onLoad;
+    body
+        section#sidebar
+            .sidebar-header
+                h1 MMM
+                p Multimedia music mashup
+            #tabs.sidebar-tabs
+                ul
+                    li#player-tab-1.tab
+                        a(href='#player-code-1')
+                            h2#player-0-name Music Bob
+                    li#player-tab-2.tab
+                        a(href='#player-code-2')
+                            h2#player-1-name Melody Jane
+                #player-code-1
+                    #editor
+                        | function foo(items) {
+                        | var x = "All this is syntax highlighted";
+                        | return x;
+                        | }
+                #player-code-2
+                    #editor2 //Editor 2 code!
+            // Tab Content
+            .sidebar-code
+            .play
+                h3
+                    | Play
+                    img(src='public/images/play.svg')
+        section#right-side
+        script(src='https://ace.c9.io/build/src/ace.js', type='text/javascript', charset='utf-8')
+        script.
+            //if playerNumber == 0 //var 0 or 1
+            var editor = ace.edit("editor");
+            editor.setTheme("ace/theme/monokai");
+            editor.getSession().setMode("ace/mode/javascript");
+            editor.setReadOnly(true);
+        script.
+            var editor2 = ace.edit("editor2");
+            editor2.setTheme("ace/theme/monokai");
+            editor2.getSession().setMode("ace/mode/javascript");
