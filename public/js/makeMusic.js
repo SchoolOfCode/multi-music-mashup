@@ -190,9 +190,71 @@ var makeMusic = (function () {
         actions[0](chain(1));
     };
 
+    var hookupViz = function hookupViz(canvasParams) {
+        var canvasCtx = canvasParams.context;
+        var WIDTH = canvasParams.width;
+        var HEIGHT = canvasParams.height;
+
+        console.log('Hook in audio analyser for viz');
+        // Create an analyser node in the Howler WebAudio context
+        var analyser = Howler.ctx.createAnalyser();
+        // Connect the masterGain -> analyser (disconnecting masterGain -> destination)
+        Howler.masterGain.connect(analyser);
+        // Connect the analyser -> destination
+        analyser.connect(Howler.ctx.destination);
+
+        //Create array to hold audio data
+        analyser.fftSize = 2048;
+        var bufferLength = analyser.frequencyBinCount;
+        var dataArray = new Uint8Array(bufferLength);
+
+        let step = 3;
+        let red = 0;
+        let incrementing = true;
+        // let green = 0;
+        // let blue = 0;
+
+        function draw() {
+            drawVisual = requestAnimationFrame(draw);
+            analyser.getByteTimeDomainData(dataArray);
+            canvasCtx.fillStyle = 'rgb(200, 200, 200)';
+            canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+            canvasCtx.lineWidth = 2;
+            canvasCtx.strokeStyle = `rgb(${red}, 0, 0)`;
+            if (incrementing)
+                red = red + step;
+            else
+                red = red - step;
+            if (red <= 0) incrementing = true;
+            if (red >= 257) incrementing = false;
+
+            canvasCtx.beginPath();
+            var sliceWidth = WIDTH * 1.0 / bufferLength;
+            var x = 0;
+            for(var i = 0; i < bufferLength; i++) {
+
+                var v = dataArray[i] / 128.0;
+                var y = v * HEIGHT/2;
+
+                if(i === 0) {
+                    canvasCtx.moveTo(x, y);
+                } else {
+                    canvasCtx.lineTo(x, y);
+                }
+
+                x += sliceWidth;
+            }
+            canvasCtx.lineTo(canvas.width, canvas.height/2);
+            canvasCtx.stroke();
+        }
+
+        draw();
+    };
+
     // Reveal public methods
     return {
-        playTheMusic: playTheMusic
+        playTheMusic: playTheMusic,
+        hookupViz: hookupViz
     };
 
 })();

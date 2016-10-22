@@ -64,6 +64,7 @@ html(lang='en')
           | Play
           img(src='/images/play.svg')
     section#right-side
+      canvas#canvas(width='400px' height='400px')
     script(src='https://ace.c9.io/build/src/ace.js', type='text/javascript', charset='utf-8')
 
     script.
@@ -133,6 +134,21 @@ html(lang='en')
         }
       });
       //End Pusher Code
+
+      //get our canvas ctx
+      var canvasWidth = 400;
+      var canvasHeight = 400;
+      var canvas = document.getElementById('canvas');
+      var canvasContext = canvas.getContext('2d');
+      canvasContext.clearRect(0, 0, canvasWidth, canvasHeight);
+
+      var canvasParams = {
+        context: canvasContext,
+        width: canvasWidth,
+        height: canvasHeight,
+      };
+
+      makeMusic.hookupViz(canvasParams);
 
       //handle play button pressed
       document.getElementById('play-button').onclick = function(e) {
