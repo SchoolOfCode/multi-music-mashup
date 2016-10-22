@@ -25,35 +25,6 @@ html(lang='en')
     var channelName = '#{channel}';
     var playerNumber = '#{playerNumber}';
     console.log(playerNumber);
-    function onLoad() {
-      //Pusher Code
-      // Enable pusher logging - don't include this in production
-      //Pusher.logToConsole = true;
-      var pusher = new Pusher('1784c495a02ce5c67fa9', {
-        cluster: 'eu',
-        encrypted: true
-      });
-      var channel = pusher.subscribe(channelName);
-      channel.bind('client-send_code', function (data) {
-        var playerId = data.playerId;
-        document.getElementById(`player-${playerId}-code`).value = data.code;
-      });
-      //End Pusher Code
-
-      //handle button click
-      if (playerNumber <= 1) {
-
-        //setup code change listeners
-        //document.getElementById(`player-${playerNumber}-code`).oninput = function (e) {
-        //  var code = e.srcElement.value;
-        //  channel.trigger('client-send_code', {
-        //    playerId: playerNumber,
-        //    code: code
-        //  });
-        //};
-      }
-    }
-    window.onload = onLoad;
   body
     section#sidebar
       .sidebar-header
@@ -83,7 +54,11 @@ html(lang='en')
           img(src='/images/play.svg')
     section#right-side
     script(src='https://ace.c9.io/build/src/ace.js', type='text/javascript', charset='utf-8')
+
     script.
+
+      //EDITOR 1
+
       //if playerNumber == 0 //var 0 or 1
       var isEditorOneEnabled = true;
       if(playerNumber == 0){
@@ -97,7 +72,17 @@ html(lang='en')
       editor.setTheme("ace/theme/monokai");
       editor.getSession().setMode("ace/mode/javascript");
       editor.setReadOnly(isEditorOneEnabled);
-    script.
+      if (playerNumber == 0) {
+        editor.on('input', function () {
+          channel.trigger('client-send_code', {
+            playerId: playerNumber,
+            code: editor.getValue()
+          });
+        });
+      }
+
+      //EDITOR 2
+
       var isEditorTwoEnabled = true;
       if (playerNumber == 1) {
         isEditorTwoEnabled = false;
@@ -109,3 +94,31 @@ html(lang='en')
       editor2.setTheme("ace/theme/monokai");
       editor2.getSession().setMode("ace/mode/javascript");
       editor2.setReadOnly(isEditorTwoEnabled);
+      if (playerNumber == 1) {
+        editor2.on('input', function () {
+          channel.trigger('client-send_code', {
+           playerId: playerNumber,
+           code: editor2.getValue()
+           });
+        });
+      }
+
+      //Pusher Code
+      // Enable pusher logging - don't include this in production
+      //Pusher.logToConsole = true;
+      var pusher = new Pusher('1784c495a02ce5c67fa9', {
+        cluster: 'eu',
+        encrypted: true
+      });
+      var channel = pusher.subscribe(channelName);
+      channel.bind('client-send_code', function (data) {
+        var playerId = data.playerId;
+        if(playerId == 0){
+          editor.setValue(data.code)
+        }
+        else if (playerId == 1) {
+          editor2.setValue(data.code)
+        }
+      });
+      //End Pusher Code
+
