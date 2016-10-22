@@ -4,86 +4,15 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.1/howler.min.js"></script>
-    <link type="text/css" rel="stylesheet" href="public/stylesheets/css/style.css"/>
-    <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700" rel="stylesheet">
-
-    <!--<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-    <script>
-        $( function() {
-            console.log('called')
-            $( "#tabs" ).tabs();
-        } );
-    </script>
-
-    <style type="text/css" media="screen">
-        #editor, #editor2 {
-            position: relative;
-            width: 100%;
-            height: 1000px;
-        }
-    </style>
+    <script src="https://unpkg.com/esprima@~3.1/dist/esprima.js"></script>
 </head>
 <body>
-<!--<div class="room-wrapper">-->
-    <!--<section id="left-side">-->
-        <!--<div class="player-name">-->
-            <!--<h2 id="player-0-name">Player Name</h2>-->
-        <!--</div>-->
-        <!--<div id="player-0-area">This is the player area</div>-->
-        <!--<textarea id="player-0-code"></textarea>-->
-    <!--</section>-->
-    <!--<section id="right-side">-->
-        <!--<div class="player-name">-->
-            <!--<h2>Player Name</h2>-->
-        <!--</div>-->
-        <!--<div id="player-1-area">This is the player area</div>-->
-        <!--<textarea id="player-1-code"></textarea>-->
-    <!--</section>-->
-<!--</div>-->
-    <section id="sidebar">
-        <div class="sidebar-header">
-            <h1>MMM</h1>
-            <p>Multimedia music mashup</p>
-        </div>
-        <div id="tabs" class="sidebar-tabs">
-            <ul>
-                <li id="player-tab-1" class="tab"><a href="#player-code-1"><h2 id="player-0-name">Music Bob</h2></a></li>
-                <li id="player-tab-2" class="tab"><a href="#player-code-2"><h2 id="player-1-name">Melody Jane</h2></a></li>
-            </ul>
-            <div id="player-code-1">
-                <div id="editor">function foo(items) {
-                    var x = "All this is syntax highlighted";
-                    return x;
-                    }</div>
-            </div>
-            <div id="player-code-2">
-                <div id="editor2">//Editor 2 code!</div>
-            </div>
-        </div>
-        <!--Tab Content-->
-        <div class="sidebar-code"></div>
-        <div class="play">
-            <h3>Play <img src="public/images/play.svg"/></h3>
-        </div>
-    </section>
-
-    <section id="right-side">
-
-    </section>
-
-    <script src="https://ace.c9.io/build/src/ace.js" type="text/javascript" charset="utf-8"></script>
-    <script>
-        var editor = ace.edit("editor");
-        editor.setTheme("ace/theme/monokai");
-        editor.getSession().setMode("ace/mode/javascript");
-    </script>
-<script>
-    var editor2 = ace.edit("editor2");
-    editor2.setTheme("ace/theme/monokai");
-    editor2.getSession().setMode("ace/mode/javascript");
-</script>
+<p id='label'>
+    label
+</p>
+<p id='start'>
+    start
+</p>
+<script src="test.js"></script>
 </body>
 </html>
