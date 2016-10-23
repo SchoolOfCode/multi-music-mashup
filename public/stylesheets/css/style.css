@@ -19,7 +19,8 @@ html {
 
 a {
   text-decoration: none;
-  color: black; }
+  color: black;
+  outline: none; }
 
 /* Room */
 .room-wrapper {
@@ -42,8 +43,7 @@ a {
 #right-side {
   width: 50%;
   display: flex;
-  justify-content: center;
-}
+  justify-content: center; }
 
 #player-2-area {
   padding: 30px; }
@@ -94,6 +94,10 @@ body {
     #sidebar .sidebar-tabs .tab h2 {
       font-weight: 300;
       font-size: 18px; }
+    #sidebar .sidebar-tabs .tab h2[selected="true"] {
+      font-weight: 500; }
+    #sidebar .sidebar-tabs .tab h2[selected="false"] {
+      font-weight: 300; }
   #sidebar .sidebar-tabs .tab:nth-child(1) {
     border-right: 2px solid white; }
   #sidebar .sidebar-code {

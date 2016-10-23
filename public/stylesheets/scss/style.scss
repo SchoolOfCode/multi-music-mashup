@@ -85,6 +85,12 @@ body{
         font-weight: 300;
         font-size: 18px;
       }
+      h2[selected="true"]{
+        font-weight: 500;
+      }
+      h2[selected="false"]{
+        font-weight: 300;
+      }
     }
     .tab:nth-child(1){
       border-right: 2px solid white;

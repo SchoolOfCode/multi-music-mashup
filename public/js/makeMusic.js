@@ -210,7 +210,7 @@ var makeMusic = (function () {
         var dataArray = new Uint8Array(bufferLength);
 
         let step = 3;
-        let red = 0;
+        let white = 100;
         let incrementing = true;
         // let green = 0;
         // let blue = 0;
@@ -218,16 +218,17 @@ var makeMusic = (function () {
         function draw() {
             drawVisual = requestAnimationFrame(draw);
             analyser.getByteTimeDomainData(dataArray);
-            canvasCtx.fillStyle = 'rgb(200, 200, 200)';
+            canvasCtx.fillStyle = '#171717';
             canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+            canvas.width = 830;
             canvasCtx.lineWidth = 2;
-            canvasCtx.strokeStyle = `rgb(${red}, 0, 0)`;
+            canvasCtx.strokeStyle = `rgb(${white}, ${white}, ${white})`;
             if (incrementing)
-                red = red + step;
+                white = white + step;
             else
-                red = red - step;
-            if (red <= 0) incrementing = true;
-            if (red >= 257) incrementing = false;
+                white = white - step;
+            if (white <= 100) incrementing = true;
+            if (white >= 257) incrementing = false;
 
             canvasCtx.beginPath();
             var sliceWidth = WIDTH * 1.0 / bufferLength;
@@ -245,6 +246,7 @@ var makeMusic = (function () {
 
                 x += sliceWidth;
             }
+            console.log('Canvas width: ' + canvas.width);
             canvasCtx.lineTo(canvas.width, canvas.height/2);
             canvasCtx.stroke();
         }

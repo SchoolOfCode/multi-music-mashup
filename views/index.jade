@@ -69,6 +69,31 @@ html(lang='en')
 
     script.
 
+      //Tab changes
+      var player1 = document.getElementById('player-0-name');
+      var player2 = document.getElementById('player-1-name');
+
+      //Add attributes
+      (function setAtrr(){
+        var att1 = document.createAttribute("selected");
+        var att2 = document.createAttribute("selected");  // Create a "class" attribute
+        att1.value = "true";                           // Set the value of the class attribute
+        player1.setAttributeNode(att1);
+        att2.value = "false";
+        player2.setAttributeNode(att2);
+      }());
+
+
+      player1.onclick = function (e) {
+        player2.setAttribute("selected", "false")
+        player1.setAttribute("selected", "true")
+      };
+
+      player2.onclick = function (e) {
+        player1.setAttribute("selected", "false")
+        player2.setAttribute("selected", "true")
+      };
+
       //EDITOR 1
 
       //if playerNumber == 0 //var 0 or 1
@@ -136,7 +161,7 @@ html(lang='en')
       //End Pusher Code
 
       //get our canvas ctx
-      var canvasWidth = 400;
+      var canvasWidth = 1000;
       var canvasHeight = 400;
       var canvas = document.getElementById('canvas');
       var canvasContext = canvas.getContext('2d');
@@ -152,14 +177,11 @@ html(lang='en')
 
       //handle play button pressed
       document.getElementById('play-button').onclick = function(e) {
-        console.log('play clicked');
 
         var player1Code = editor.getValue();
         makeMusic.playTheMusic(player1Code, function () {
-          console.log('finished playing player1 track');
         });
         var player2Code = editor2.getValue();
         makeMusic.playTheMusic(player2Code, function () {
-          console.log('finished playing player2 track');
         });
       };
