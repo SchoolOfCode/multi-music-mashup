@@ -300,6 +300,16 @@ var makeMusic = (function () {
         actions[0](chain(1));
     };
 
+    var stopMusic = function () {
+        for (var key in howls) {
+            // skip loop if the property is from prototype
+            if (!howls.hasOwnProperty(key)) continue;
+
+            howls[key].stop();
+        }
+        console.log('stopped music')
+    };
+
     var hookupViz = function hookupViz(canvasParams) {
         var canvasCtx = canvasParams.context;
         var WIDTH = canvasParams.width;
@@ -356,7 +366,7 @@ var makeMusic = (function () {
 
                 x += sliceWidth;
             }
-            console.log('Canvas width: ' + canvas.width);
+            // console.log('Canvas width: ' + canvas.width);
             canvasCtx.lineTo(canvas.width, canvas.height/2);
             canvasCtx.stroke();
         }
@@ -367,6 +377,7 @@ var makeMusic = (function () {
     // Reveal public methods
     return {
         playTheMusic: playTheMusic,
+        stopMusic: stopMusic,
         hookupViz: hookupViz
     };
 
